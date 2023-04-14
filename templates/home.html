@@ -16,21 +16,6 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">About Us</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sign Out</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#">User Detail</a>
-        </li>
-      </ul>
-    </div>
   </nav>
 <div class="container  mb-1">
     <div class="row justify-content-center mt-5">
@@ -38,24 +23,22 @@
             <h1>IITGN Outlets</h1>
         </div>
     </div>
-
     
-    
+    {% for outlet in outlets %}
     <div class="container mb-4">
-        <div class="row flex-nowrap overflow-auto">
-            <div class="card col-12 col-sm-6 col-md-4 col-lg-3 mx-3 bg-light my-3" style="width: 18rem;">
-                <img src="#" class="card-img-top object-fit-fill mt-3" alt="outlets" style="height:10rem" >
-                <div class="card-body">
-                  <h5 class="card-title">type</h5>
-                  <form method="GET" action="#">
-                    <div><button class="btn btn-primary" name="outlets" value="type">Food Token</button></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+      <div class="row flex-nowrap overflow-auto">
+          <div class="card col-12 col-sm-6 col-md-4 col-lg-3 mx-3 bg-light my-3" style="width: 18rem;">
+              <img id="image" src="#" class="card-img-top object-fit-fill mt-3" alt="outlets" style="height:10rem" >
+              <div class="card-body">
+                <h5 class="card-title">{{outlet['name']}}</h5>
+                <h5 class="card-title">{{outlet['phone_no']}}</h5>
+                <form method="GET" action="#">
+                  <div><button class="btn btn-primary" name="outlets" value="{{outlet['id']}}">Food Token</button></div>
+                </form>
+              </div>
+          </div>
+      </div>
     </div>
-
-    
+    {% endfor %}
 </div>
 {% endblock content %}
