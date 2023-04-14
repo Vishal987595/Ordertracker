@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+    <style>
+      .background-image {
+        background-image: url('static/homebg.jpg');
+        height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-shadow: 2px 2px #333;
+      }
+    </style>
+ 
+    <div class="background-image">
+      
+      <h1>Welcome to Order Traker</h1>
+      <h3>Team Name: Crakers</h3>
+      <h4>HackRush 2023</h4>
+      <div class="navbar navbar-expand-lg bg-trasparant mt-5" >
+          <ul class="d-flex">
+            <div class="nav-item mr-5">
+              <a class="btn btn-dark" href="{{url_for('login')}}">Outlet</a>
+            </div>
+            <div>
+              <a class="btn btn-dark" href="{{url_for('customerhome')}}">Customer</a>
+            </div>
+          </ul>
+    </div>
+    </div>
+    {% if messages %}
+    <div class="row justify-content-center pt-3">
+      <div class="col-md-6">
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">{{message}}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% endblock content %}
