@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %} {% if messages %} {% for message in
+  messages %}
+  <div class="alert alert-primary text-center" role="alert" id="flash-message">
+    <div>{{ message }}</div>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+
+      .card {
+        margin-top: 50px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        background-color: #343a40;
+        color: white;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .form-control:focus {
+        border-color: #343a40;
+        box-shadow: none;
+      }
+
+      .btn {
+        background-color: #343a40;
+        border-color: #343a40;
+      }
+
+      .btn:hover {
+        background-color: #ffffff;
+        border-color: #23272b;
+        color:#000000;
+        font-weight: bold;
+      }
+
+      .card-footer {
+        background-color: #f8f9fa;
+        border-radius: 0 0 10px 10px;
+      }
+      .btnsame{
+        background-color: #343a40;
+        color: white;
+        border-radius:3px
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card">
+            <div class="card-header text-center">
+              <h4>Sign Up</h4>
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Outlet Name</label>
+                    <input required type="text" class="form-control" name='name' id="name" placeholder="Restaurant name">
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email address</label>
+                  <input required type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="example@gmail.com">
+                </div>
+                <div class="mb-3">
+                  <label for="Phone number" class="form-label">Phone number</label>
+                  <input required type="tel" class="form-control" name="Phone number" id="Phone number" aria-describedby="PhoneHelp" placeholder="9904578769">
+                </div>
+                
+                
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input required type="password" class="form-control"name="password" id="password" placeholder="Password">
+                </div>
+                <div class="text-center">
+                  <button required type="submit" class="btn btnsame">Submit</button>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-muted text-center">
+              Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}

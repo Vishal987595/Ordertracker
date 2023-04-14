@@ -1,174 +1,43 @@
-{% extends 'restaurant/base.html' %} {% block content %}
+{% extends 'outlets/base.html' %} {% block content %}
 <style>
   body {
     background-color: #d9d9d9;
   }
 </style>
 {% with messages = get_flashed_messages() %} {% if messages %} {% for message in
-  messages %}
-  <div class="alert alert-primary text-center" role="alert" id="flash-message">
-    <div>{{ message }}</div>
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
+messages %}
+<div class="alert alert-primary text-center" role="alert" id="flash-message">
+  <div>{{ message }}</div>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
 <section class="pb-24 position-relative overflow-hidden">
-  <div class="container">
-    <div class="row mt-12">
-      <div class="col-12">
-        <div class="mw-2xl text-center mx-auto">
-          {% if(rest_name ) %}
-          <div class="row my-3">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title mb-0">Restaurant Details</h4>
-                </div>
-                <div class="d-flex flex-row">
-                  <div class="card-body col-md-6">
-                    <p class="card-text text-start"><strong>Name:</strong> {{rest['name']}}</p>
-                    <p class="card-text"><strong>Email:</strong> {{rest['email']}}</p>
-                    <p class="card-text"><strong>Phone Number:</strong>{{rest['phone_number']}} </p>
-                    <p class="card-text"><strong>Rating:</strong>{{rest['rating']}} </p>
-                  </div>
-                  <div class="card-body col-md-6">
-                    <p class="card-text"><strong>Street Name:</strong>{{rest['street_name']}} </p>
-                    <p class="card-text"><strong>City:</strong>{{rest['city']}} </p>
-                    <p class="card-text"><strong>State:</strong> {{rest['state']}}</p>
-                    <p class="card-text"><strong>Pin Code:</strong> {{rest['pin_code']}}</p>
-                  </div>
-                  <div class="card-body col-md-6">
-                    <p class="card-text"><strong>Weekday Opening Time:</strong> {{rest['weekday_opening_time']}}</p>
-                    <p class="card-text"><strong>Weekday Closing Time:</strong> {{rest['weekday_closing_time']}}</p>
-                    <p class="card-text"><strong>Weekend Opening Time:</strong> {{rest['weekend_opening_time']}}</p>
-                    <p class="card-text"><strong>Weekend Closing Time:</strong> {{rest['weekend_closing_time']}}</p>
-                    
-                  </div>
-                </div>
-                <div>
-                  <button id="edit-btn" type="button" class="btn btn-primary">Edit</button>
-                  <form method="POST" id="edit-form" style="display:none" >
-                    <br>
-                    <label for="address">Email:</label>
-                    <input required type="email" id="email" name="email" >
-                    <br>
-                    <label for="phone">Phone Number:</label>
-                    <input required type="phone_number" id="phone" name="phone" >
-                    <br>
-                    <button id="savechagne" class="btn btn-primary mb-3" type="submit">Save Changes</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          {%else%}
-          <header>
-            <h1 class="mt-5 mb-0 lh-sm">
-              <span>Restaurant</span>
-              <span>Name</span>
-            </h1>
-          </header>
-          
-          {%endif%}
-        </div>
-      </div>
+  <div class="container text-center">
+    <h1>Order Token Management</h1>
+    <table class="table table-bordered table-dark shadow rounded">
+      <thead class="fw-bold">
+        <tr>
+          <th>Token Number</th>
+          <th>Order Status</th>
+          <th>Placed Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for token in tokens%}
+        <tr>
+          <td>{{token['token_no']}}</td>
+          <td>{{token['order_status']}}</td>
+          <td>{{token['placed_time']}}</td>
+          <td><button class="btn btn-success">Start Preparing</button></td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    <div class="mt-3">
+        <button type="button" class="btn btn-primary">Add New Order</button>
     </div>
   </div>
 </section>
-
-<section>
-  <div class="container w-full bg-white pb-3">
-     <!-- Givign option to selce the time show a Delieveries -->
-    <div class="d-flex p-4 flex-column align-items-center justify-content-center">
-      <div>
-        <form id="form2" method="POST" >
-        <select type="submit" id="duration" name="duration" class="form-select form-select-lg mb-3 px-4 py-2" aria-label=".form-select-lg example">
-          <option selected>Orders of duration?</option>
-          <option value="today">Today</option>
-          <option value="lastweek">Last Week</option>
-          <option value="all">All</option>
-        </select>
-      </form>
-      </div>
-      <div><h4 class="fw-bold">Your <span>All</span> Delieveries</h4></div>
-    </div>
-      {%for order in orders %}
-      <div class="card bg-light mb-5">
-        <div class="shadow-sm container">
-          <div class="row g-0 bg-white border mb-3">
-            <div class="col-md-2 d-flex align-items-center">
-              <div class="d-flex justify-content-center rounded-circle overflow-hidden"style="width: 150px; height: 150px">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/800px-Eq_it-na_pizza-margherita_sep2005_sml.jpg"
-                  alt="Product Image"
-                  class="w-100 h-100"
-                />
-              </div>
-            </div>
-
-            <div class="col-md-9">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="col-md-8">
-                    <table class="table table-bordered table-striped">
-                      <tr>
-                        <td>Item Name</td>
-                        <td>Item Price</td>
-                        <td>Item Quantity</td>
-                      </tr>
-                      {%for item in order["order_items"]%}
-                      <tr>
-                        <td>{{item["name"]}}</td>
-                        <td>{{item["unit_price"]}}</td>
-                        <td>{{item["quantity"]}}</td>
-                      </tr>
-                      {%endfor%}
-                    </table>
-                  </div>
-                  <div class="col-md-3 align-item-center">
-                    <p class="card-text"><span class="fw-bold"> Total price:</span> {{order["net_price"]}}</p>
-                    <p class="card-text"><span class="fw-bold"> Order time:</span> {{order["order_placed_time"]}}</p>
-                    <p class="card-text"><span class="fw-bold"> Order status:</span> {{order["order_status"]}}</p>
-                     <!-- Upadating delivery status for assign 4 -->
-                    {%if order["order_status"] == "placed"%} 
-                    <form method="POST"> 
-                    <button type="submit" id="order_update" name="order_update" class="btn btn-primary" value={{order['order_ID']}}>Ready</button>
-                    </form>
-                    {%endif%}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {%endfor%}
-    </div>
-  </div>
-
-  <script>
-      const editBtn = document.getElementById('edit-btn');
-      const editForm = document.getElementById('edit-form');
-      const duration = document.getElementById('duration');
-      const savechagne = document.getElementById('savechagne');
-
-      duration.addEventListener("change", ()=>{
-        document.getElementById("form2").submit()
-        window.location.reload
-      })
-      editBtn.addEventListener('click', () => {
-        editForm.style.display = 'block';
-      });
-      savechange.addEventListener('submit', (event) => {
-        event.preventDefault();
-        // handle form submission here
-        // you can use fetch() or XMLHttpRequest to send the updated data to the server
-        // or update the HTML table directly using JavaScript
-        // once the data is updated, hide the edit form again
-        editForm.style.display = 'none';
-        window.location.reload
-      });
-      
-    </script>
-</section>
-
 
 {% endblock content %}
