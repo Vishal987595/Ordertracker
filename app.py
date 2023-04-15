@@ -1,16 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import flask
 
-import MySQLdb.cursors
-
 app = Flask(__name__)
 from configure import config
 mysql = config(app)
 
 from outlet import outlet
-from customer import customer
 app.register_blueprint(outlet)
-app.register_blueprint(customer)
 
 @app.route('/')
 def home():
@@ -19,14 +15,14 @@ def home():
 @app.route('/customerhome')
 def customerhome():
     cur = mysql.connection.cursor()
-    cur.execute("select outlet_id, name, img, phone_no from outlet;")
+    cur.execute("select outlet_id, name, phone_no from outlet;")
     output = cur.fetchall()
     outlets = []
     for detail in output:
         temp = {
             'id': detail[0],
             'name': detail[1],
-            'phone_no': detail[3]
+            'phone_no': detail[2]
         }
         outlets.append(temp)
     return render_template('home.html', outlets=outlets)
@@ -51,9 +47,49 @@ def login():
         flask.flash(msg)
     return render_template('login.html')
 
-@app.route('/outletsignup')
+@app.route('/outletsignup', methods=['GET', 'POST'])
 def outletsignup():
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form and 'Phone number' in request.form:
+        name = request.form.get('name')
+        email = request.form['email']
+        phone = request.form['Phone number']
+        password = request.form['password']
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute("insert into food_token.outlet(name, email, phone_no, password) values(%s, %s, %s, %s)", (name, email, phone, password,))
+            mysql.connection.commit()
+            cur.close()
+            flask.flash("Signup successfully!!")
+            return render_template('login.html')
+        except:
+            flask.flash("fill signup form again!!")
+
     return render_template('outletsignup.html')
+
+@app.route('/customer/<int:outlet_id>')
+def customer(outlet_id):
+    cur = mysql.connection.cursor()
+    query = "SELECT order_status, token_no, placed_time FROM orders WHERE outlet_id = %s order by placed_time desc;"
+    cur.execute(query, (outlet_id,))
+    output = cur.fetchall()
+    orderPrepared = []
+    orderQueued = []
+    orderCollected = []
+    count = 0
+    for order in output:
+        temp = {
+            'order_status': order[0],
+            'token_no': order[1],
+            'placed_time': order[2]
+        }
+        if(order[0]=='prepared'):
+            orderPrepared.append(temp)
+        elif(order[0]=='queued'):
+            orderQueued.append(temp)
+        elif (count<10):
+            count += 1
+            orderCollected.append(temp)
+    return render_template('customer.html', orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
 
 
 if __name__ == '__main__':
