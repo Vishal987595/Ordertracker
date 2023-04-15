@@ -8,9 +8,7 @@ from configure import config
 mysql = config(app)
 
 from outlet import outlet
-from customer import customer
 app.register_blueprint(outlet)
-app.register_blueprint(customer)
 
 @app.route('/')
 def home():
@@ -57,14 +55,16 @@ def outletsignup():
 
 @app.route('/customer/<int:outlet_id>')
 def customer(outlet_id):
-    
     cur = mysql.connection.cursor()
+    cur.execute("select name from outlet where outlet_id=%s", [outlet_id])
+    outlet = cur.fetchone()
     query = "SELECT order_status, token_no, placed_time FROM orders WHERE outlet_id = %s"
     cur.execute(query, (outlet_id,))
     output = cur.fetchall()
     orderPrepared = []
     orderQueued = []
     orderCollected = []
+    count = 0
     for order in output:
         temp = {
             'order_status': order[0],
@@ -75,9 +75,10 @@ def customer(outlet_id):
             orderPrepared.append(temp)
         elif(order[0]=='queued'):
             orderQueued.append(temp)
-        else:
+        elif (count<5):
+            count += 1
             orderCollected.append(temp)
-    return render_template('customer.html', orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
+    return render_template('customer.html', name=outlet[0], orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
 
 
 if __name__ == '__main__':
