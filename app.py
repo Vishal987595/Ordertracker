@@ -19,14 +19,14 @@ def home():
 @app.route('/customerhome')
 def customerhome():
     cur = mysql.connection.cursor()
-    cur.execute("select outlet_id, name, img, phone_no from outlet;")
+    cur.execute("select outlet_id, name, phone_no from outlet;")
     output = cur.fetchall()
     outlets = []
     for detail in output:
         temp = {
             'id': detail[0],
             'name': detail[1],
-            'phone_no': detail[3]
+            'phone_no': detail[2]
         }
         outlets.append(temp)
     return render_template('home.html', outlets=outlets)
@@ -54,6 +54,30 @@ def login():
 @app.route('/outletsignup')
 def outletsignup():
     return render_template('outletsignup.html')
+
+@app.route('/customer/<int:outlet_id>')
+def customer(outlet_id):
+    
+    cur = mysql.connection.cursor()
+    query = "SELECT order_status, token_no, placed_time FROM orders WHERE outlet_id = %s"
+    cur.execute(query, (outlet_id,))
+    output = cur.fetchall()
+    orderPrepared = []
+    orderQueued = []
+    orderCollected = []
+    for order in output:
+        temp = {
+            'order_status': order[0],
+            'token_no': order[1],
+            'placed-time': order[2]
+        }
+        if(order[0]=='prepared'):
+            orderPrepared.append(temp)
+        elif(order[0]=='queued'):
+            orderQueued.append(temp)
+        else:
+            orderCollected.append(temp)
+    return render_template('customer.html', orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
 
 
 if __name__ == '__main__':

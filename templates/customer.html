@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %} {% for message in messages %}
+<div class="alert alert-success text-center" role="alert" id="flash-message">
+  <div>{{ message }}</div>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+<style>
+  body {
+    background-color: #d9d9d9;
+  }
+</style>
+
+<div class="container text-center">
+  <h1 class="my-4 fw-bold"><label for="outletSelect">Restaurant Name:</label><span class="text-primary"> name</span></h1>
+  <h3 class="fw-bold text-dark">Orders being prepared</h3>
+  <table class="table shadow-lg rounded table-bordered table-light mb-5">
+    <thead class="table-dark color-black">
+      <tr>
+        <th>Token Number</th>
+        <th>Order Status</th>
+        <th>Placed Time</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for order in orderPrepared%}
+      <tr>
+        <td>{{order['token_no']}}</td>
+        <td>{{order['order_status']}}</td>
+        <td>{{order['placed_time']}}</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+  <h3 class="fw-bold text-dark">Orders ready to collect</h3>
+  <table class="table shadow-lg rounded table-bordered table-light mb-5">
+    <thead class="table-dark color-black">
+      <tr>
+        <th>Token Number</th>
+        <th>Order Status</th>
+        <th>Placed Time</th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for order in orderQueued%}
+        <tr>
+          <td>{{order['token_no']}}</td>
+          <td>{{order['order_status']}}</td>
+          <td>{{order['placed_time']}}</td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+
+  <h3 class="fw-bold text-dark">Orders in queue</h3>
+  <table class="table shadow-lg rounded table-bordered table-light mb-5">
+    <thead class="table-dark color-black">
+      <tr>
+        <th>Token Number</th>
+        <th>Order Status</th>
+        <th>Placed Time</th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for order in orderCollected%}
+        <tr>
+          <td>{{order['token_no']}}</td>
+          <td>{{order['order_status']}}</td>
+          <td>{{order['placed_time']}}</td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
