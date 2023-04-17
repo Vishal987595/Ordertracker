@@ -1,4 +1,4 @@
-from flask import flash, render_template, session, flash, request, redirect, url_for, Blueprint
+from flask import flash, render_template, session, flash, request, Blueprint
 import datetime
 outlet = Blueprint('outlet', __name__)
 
@@ -43,6 +43,11 @@ def outletdetail():
     
     outlet_id = session['outlet_id']
     cur = mysql.connection.cursor()
+    cur.execute("select name from outlet where outlet_id=%s", (outlet_id,))
+    name = "Outlet name"
+    output = cur.fetchone()
+    if output:
+        name = output[0]
     output = cur.execute("select token_no, placed_time, order_status, order_id, prepared_time from orders where (outlet_id=%s and order_status = %s) order by placed_time asc;", (outlet_id, "queued",))
     output = cur.fetchall()
     tokens = []
@@ -66,4 +71,15 @@ def outletdetail():
             'prepared_time': token_detail[4]
         }
         tokens.append(temp)
-    return render_template('outlets/outletdetail.html', tokens=tokens)
+    output = cur.execute("select token_no, placed_time, order_status, order_id, prepared_time from orders where (outlet_id=%s and order_status = %s) order by placed_time asc limit 10;", (outlet_id, "collected",))
+    output = cur.fetchall()
+    for token_detail in output:
+        temp = {
+            'token_no': token_detail[0],
+            'placed_time': token_detail[1],
+            'order_status': token_detail[2],
+            'id': token_detail[3],
+            'prepared_time': token_detail[4]
+        }
+        tokens.append(temp)
+    return render_template('outlets/outletdetail.html',name=name, tokens=tokens)

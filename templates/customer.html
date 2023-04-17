@@ -11,8 +11,8 @@ get_flashed_messages() %} {% if messages %} {% for message in messages %}
 </style>
 
 <div class="container text-center">
-  <h1 class="my-4 fw-bold"><label for="outletSelect">Outlet Name:</label><span class="text-primary"> {{name}}</span></h1>
-  <h3 class="fw-bold text-dark">Orders ready to collect </h3>
+  <h1 class="my-4 fw-bold"><label for="outletSelect">Outlet: </label><span class="text">{{name}}</span></h1>
+  <h3 class="fw-bold text-dark">Orders ready to collect</h3>
   <table class="table shadow-lg rounded table-bordered table-light mb-5">
     <thead class="table-dark color-black">
       <tr>
