@@ -69,6 +69,11 @@ def outletsignup():
 @app.route('/customer/<int:outlet_id>')
 def customer(outlet_id):
     cur = mysql.connection.cursor()
+    cur.execute("select name from outlet where outlet_id=%s", (outlet_id,))
+    name = "Outlet name"
+    output = cur.fetchone()
+    if output:
+        name = output[0]
     query = "SELECT order_status, token_no, placed_time FROM orders WHERE outlet_id = %s order by placed_time desc;"
     cur.execute(query, (outlet_id,))
     output = cur.fetchall()
@@ -89,7 +94,7 @@ def customer(outlet_id):
         elif (count<10):
             count += 1
             orderCollected.append(temp)
-    return render_template('customer.html', orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
+    return render_template('customer.html',name=name, orderPrepared=orderPrepared, orderQueued=orderQueued, orderCollected=orderCollected)
 
 
 if __name__ == '__main__':
