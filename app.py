@@ -74,6 +74,7 @@ def customer(outlet_id):
     output = cur.fetchone()
     if output:
         name = output[0]
+    print(name)
     query = "SELECT order_status, token_no, placed_time FROM orders WHERE outlet_id = %s order by placed_time desc;"
     cur.execute(query, (outlet_id,))
     output = cur.fetchall()

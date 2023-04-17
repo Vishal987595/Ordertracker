@@ -25,13 +25,10 @@ outlet_id int,
 foreign key (outlet_id) references outlet(outlet_id) on delete cascade  
 );
 
-insert into food_token.outlet(name, email, phone_no, password) values
-('aadhya', 'aadhya@gmail.com', '7894561230', 'aadhya'),
-('2 degree', '2degree@gmail.com', '9876543210', '2degree');
+INSERT INTO food_token.outlet VALUES
+('1', 'aadhya', 'aadhya@gmail.com', '7894561230', 'aadhya'),
+('2', '2 degree', '2degree@gmail.com', '9876543210', '2degree'),
+('3', 'Vs Fast Food', 'vsffood@gmail.com', '4948843210', 'vsffood'),
+('4', 'Dawat', 'dawat@gmail.com', '3883943210', 'dawat');
 
-insert into food_token.orders(order_status, token_no, outlet_id) values
-('queued', 1, 1),
-('prepared', 2, 1), 
-('collected', 3, 1);
 
-select * from orders;
