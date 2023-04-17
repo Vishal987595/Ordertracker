@@ -22,13 +22,13 @@ get_flashed_messages() %} {% if messages %} {% for message in messages %}
       </tr>
     </thead>
     <tbody>
-        {%for order in orderQueued%}
-        <tr>
-          <td>{{order['token_no']}}</td>
-          <td>{{order['order_status']}}</td>
-          <td>{{order['placed_time']}}</td>
-        </tr>
-      {%endfor%}
+    {%for order in orderPrepared%}
+      <tr>
+        <td>{{order['token_no']}}</td>
+        <td>{{order['order_status']}}</td>
+        <td>{{order['placed_time']}}</td>
+      </tr>
+    {%endfor%}
     </tbody>
   </table>
 
@@ -42,17 +42,17 @@ get_flashed_messages() %} {% if messages %} {% for message in messages %}
       </tr>
     </thead>
     <tbody>
-    {%for order in orderPrepared%}
-      <tr>
-        <td>{{order['token_no']}}</td>
-        <td>{{order['order_status']}}</td>
-        <td>{{order['placed_time']}}</td>
-      </tr>
-    {%endfor%}
+        {%for order in orderQueued%}
+        <tr>
+          <td>{{order['token_no']}}</td>
+          <td>{{order['order_status']}}</td>
+          <td>{{order['placed_time']}}</td>
+        </tr>
+      {%endfor%}
     </tbody>
   </table>
 
-  <h3 class="fw-bold text-dark">Orders in queue</h3>
+  <h3 class="fw-bold text-dark">Orders collected</h3>
   <table class="table shadow-lg rounded table-bordered table-light mb-5">
     <thead class="table-dark color-black">
       <tr>
